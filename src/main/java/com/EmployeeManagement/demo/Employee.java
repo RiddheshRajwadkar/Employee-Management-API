@@ -8,12 +8,15 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     String name;
-    @Column(nullable = false)
+    @Column(name = "department", nullable = false)
     String department;
-    @Column(nullable = false)
+    @Column(name = "salary", nullable = false)
     double salary;
+
+    public Employee() {
+    }
 
     public Employee(Long id, String name, String department, double salary) {
         this.id = id;
@@ -52,5 +55,15 @@ public class Employee {
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", department='" + department + '\'' +
+                ", salary=" + salary +
+                '}';
     }
 }
