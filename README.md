@@ -3,10 +3,10 @@
 Welcome to the **Employee Management API**! this project is a simple Restful web application built with **Spring Boot** and **Spring Data JPA**. It allows you to manage employee information, including performing CRUD (Create, Read, Update, Delete)operations.
 
 ## Table of Contents
-- [Project Overview] (#project-overview)
-- [Technologies used] (#technologies-used)
-- [Features] (#features)
-- [Testing with Postman] (#testing-with-postman)
+- Project Overview
+- Technologies used
+- Features
+- Testing with Postman
 
 ## Project Overview 
 The **Employee Management API** provides a RESTful interface for managing employee data. With endpoints for adding, viewing, updating, and deleting employees, this project demonstrates how to build a simple, database-backed application using **Spring Boot**.
