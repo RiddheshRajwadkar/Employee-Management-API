@@ -6,7 +6,7 @@ Welcome to the **Employee Management API**! this project is a simple Restful web
 - Project Overview
 - Technologies used
 - Features
-- Testing with Postman
+- Demo
 
 ## Project Overview 
 The **Employee Management API** provides a RESTful interface for managing employee data. With endpoints for adding, viewing, updating, and deleting employees, this project demonstrates how to build a simple, database-backed application using **Spring Boot**.
