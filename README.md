@@ -32,5 +32,6 @@ This project uses the following technologies:
 
 Watch the application in action below:
 
-
+- YouTube:  
+  [![Watch the demo]](https://www.youtube.com/watch?v=CFNGqq1lmrE)
 
