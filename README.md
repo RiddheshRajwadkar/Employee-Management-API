@@ -17,7 +17,7 @@ The application is designed with an in-memory H2 database, making it lightweight
 This project uses the following technologies:
 - **Spring Boot** (Version 3.4.0)
 - **Spring Data JPA**
-- **H2 Database** (In-memory database for easy testing)
+- **Supabase Database**
 - **Postman** (for API testing)
 - **Hibernate ORM** (for database interaction)
 - **Maven** (as the build tool)
@@ -25,7 +25,7 @@ This project uses the following technologies:
 ## Features
 - **CRUD Operations**: Create, read, update, and delete employee records.
 - **RESTful API**: All interactions are done through REST API endpoints.
-- **In-memory H2 Database**: Data is stored in-memory, allowing for quick testing and iteration.
+- **Supabase Database**: Data is stored in the Supabase database, providing a cloud-based solution.
 - **Spring Boot**: Fully configured to run with minimal setup.
 
 ## Demo
