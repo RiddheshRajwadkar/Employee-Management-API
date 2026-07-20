@@ -1,5 +1,7 @@
-package com.EmployeeManagement.demo;
+package com.EmployeeManagement.demo.service;
 
+import com.EmployeeManagement.demo.entities.Employee;
+import com.EmployeeManagement.demo.repositories.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.EmployeeManagement.demo;
+package com.EmployeeManagement.demo.entities;
 
 import jakarta.persistence.*;
 
