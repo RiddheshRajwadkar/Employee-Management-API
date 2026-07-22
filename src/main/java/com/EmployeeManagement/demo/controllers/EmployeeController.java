@@ -1,6 +1,6 @@
-package com.EmployeeManagement.demo.controller;
+package com.EmployeeManagement.demo.controllers;
 
-import com.EmployeeManagement.demo.service.EmployeeService;
+import com.EmployeeManagement.demo.services.EmployeeService;
 import com.EmployeeManagement.demo.entities.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/employees") // Base URL for all endpoints in this controller
+@RequestMapping("/api/v1/employee") // Base URL for all endpoints in this controller
 public class EmployeeController {
 
     private final EmployeeService employeeService;

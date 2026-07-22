@@ -1,4 +1,4 @@
-package com.EmployeeManagement.demo.service;
+package com.EmployeeManagement.demo.services;
 
 import com.EmployeeManagement.demo.entities.Employee;
 import com.EmployeeManagement.demo.repositories.EmployeeRepository;
