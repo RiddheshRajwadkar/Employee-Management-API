@@ -1,7 +1,7 @@
 package com.EmployeeManagement.demo.security;
 
-import com.EmployeeManagement.demo.dtos.employeeRequestDTO;
-import com.EmployeeManagement.demo.dtos.employeeResponseDTO;
+import com.EmployeeManagement.demo.dtos.EmployeeRequestDTO;
+import com.EmployeeManagement.demo.dtos.EmployeeResponseDTO;
 import com.EmployeeManagement.demo.entities.Employee;
 import com.EmployeeManagement.demo.mappers.employeeMapper;
 import com.EmployeeManagement.demo.services.EmployeeService;
@@ -20,11 +20,15 @@ public class AuthService {
         this.employeeMapper = employeeMapper;
     }
 
-    public employeeResponseDTO registerEmployee(employeeRequestDTO employeeRequestDTO) {
+    public EmployeeResponseDTO registerEmployee(EmployeeRequestDTO employeeRequestDTO) {
         Employee employee = employeeMapper.toEntity(employeeRequestDTO);
         String encodedPassword = passwordEncoder.encode(employee.getPassword());
         employee.setPassword(encodedPassword);
         employeeService.createEmployee(employee);
         return employeeMapper.toResponseDto(employee);
+    }
+
+    public EmployeeRequestDTO loginEmployee(EmployeeRequestDTO employeeRequestDTO) {
+        Employee employee =
     }
 }

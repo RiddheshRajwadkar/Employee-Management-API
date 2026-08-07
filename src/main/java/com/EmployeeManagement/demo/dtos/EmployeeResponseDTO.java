@@ -2,7 +2,7 @@ package com.EmployeeManagement.demo.dtos;
 
 import java.math.BigDecimal;
 
-public class employeeResponseDTO {
+public class EmployeeResponseDTO {
 
     String name;
 

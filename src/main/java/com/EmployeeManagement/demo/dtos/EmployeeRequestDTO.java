@@ -4,7 +4,7 @@ import jakarta.persistence.Column;
 
 import java.math.BigDecimal;
 
-public class employeeRequestDTO {
+public class EmployeeRequestDTO {
     String name;
 
     String department;

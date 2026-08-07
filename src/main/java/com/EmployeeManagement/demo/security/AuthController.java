@@ -1,7 +1,7 @@
 package com.EmployeeManagement.demo.security;
 
-import com.EmployeeManagement.demo.dtos.employeeRequestDTO;
-import com.EmployeeManagement.demo.dtos.employeeResponseDTO;
+import com.EmployeeManagement.demo.dtos.EmployeeRequestDTO;
+import com.EmployeeManagement.demo.dtos.EmployeeResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,8 +20,14 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<employeeResponseDTO> registerEmployee(@RequestBody employeeRequestDTO employeeRequestDTO){
-        employeeResponseDTO createdEmployeeDto = authService.registerEmployee(employeeRequestDTO);
-        return new ResponseEntity<>(createdEmployeeDto, HttpStatus.CREATED);
+    public ResponseEntity<EmployeeResponseDTO> registerEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO){
+        EmployeeResponseDTO createEmployeeDto = authService.registerEmployee(employeeRequestDTO);
+        return new ResponseEntity<>(createEmployeeDto, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<EmployeeRequestDTO> loginEmployee(@RequestBody EmployeeRequestDTO employeeRequestDTO){
+        EmployeeRequestDTO loginEmployeeDto = authService.loginEmployee(employeeRequestDTO);
+        return new ResponseEntity<>(loginEmployeeDto, HttpStatus.ACCEPTED);
     }
 }
