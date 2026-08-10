@@ -6,7 +6,7 @@ import com.EmployeeManagement.demo.entities.Employee;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface employeeMapper {
+public interface EmployeeMapper {
 
     Employee toEntity(EmployeeRequestDTO dto);
 

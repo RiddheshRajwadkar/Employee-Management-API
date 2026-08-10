@@ -3,7 +3,6 @@ package com.EmployeeManagement.demo.security;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.DirectEncrypter;
 import com.nimbusds.jose.crypto.MACSigner;
-import com.nimbusds.jose.jca.JWEJCAContext;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import io.jsonwebtoken.security.Keys;
@@ -11,13 +10,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Set;
 
 
 @Component
-public class jwtService {
+public class JwtService {
 
     @Value("${jwtSecret}")
     private String jwtSecret;
