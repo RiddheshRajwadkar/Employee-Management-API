@@ -9,6 +9,7 @@ import com.EmployeeManagement.demo.mappers.EmployeeMapper;
 import com.EmployeeManagement.demo.repositories.EmployeeRepository;
 import com.EmployeeManagement.demo.services.EmployeeService;
 import com.nimbusds.jose.JOSEException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -37,26 +38,12 @@ public class AuthService {
     }
 
     public AuthResponseDTO loginEmployee(AuthRequestDTO authRequestDTO) throws JOSEException {
-        Long employeeId;
-        String employeeName = authRequestDTO.getName() != null ? authRequestDTO.getName() : null;
-        String employeeEmail = authRequestDTO.getEmail() != null ? authRequestDTO.getEmail() : null;
-        String password = authRequestDTO.getPassword();
-        if(employeeName == null) {
-            employeeId = employeeRepository.findIdByEmail(employeeEmail);
-        } else {
-            employeeId = employeeRepository.findIdByName(employeeName);
+        Employee employee = employeeRepository.findEmployeeByEmail(authRequestDTO.getEmail());
+        if(!passwordEncoder.matches(authRequestDTO.getPassword(), employee.getPassword())) {
+            throw new BadCredentialsException("Invalid email or password");
         }
 
-        VerifyEmployee(employeeName,employeeName,password);
-        if(authRequestDTO != null) {
-
-            jwtService.generateAccessToken(employeeId,employeeName, employeeEmail);
-
-
-        }
-    }
-
-    private Boolean VerifyEmployee(String name, String email, String password) {
-
+        String token = jwtService.generateAccessToken(employee.getId(), employee.getName(), employee.getEmail());
+        return new AuthResponseDTO(token);
     }
 }

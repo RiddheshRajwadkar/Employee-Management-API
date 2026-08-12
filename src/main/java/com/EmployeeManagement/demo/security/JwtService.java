@@ -10,13 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 
 @Component
 public class JwtService {
 
-    @Value("${jwtSecret}")
+    @Value("${app.jwt.secret}")
     private String jwtSecret;
 
     @Value("${app.jwt.encrypt.key}")
@@ -79,7 +80,7 @@ public class JwtService {
         JWEObject jweObject = new JWEObject(new JWEHeader.Builder(JWEAlgorithm.DIR, EncryptionMethod.A256GCM).contentType("JWT").build(),
                 new Payload(signedJWT));
 
-        JWEEncrypter encrypter = new DirectEncrypter(jwtEncryptedSecret.getBytes());
+        JWEEncrypter encrypter = new DirectEncrypter(jwtEncryptedSecret.getBytes(StandardCharsets.UTF_8));
         jweObject.encrypt(encrypter);
 
         return jweObject.serialize();
