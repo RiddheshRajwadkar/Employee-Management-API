@@ -1,5 +1,6 @@
 package com.EmployeeManagement.demo.security;
 
+import com.EmployeeManagement.demo.entities.Employee;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.DirectEncrypter;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -56,19 +57,18 @@ public class JwtService {
     public SecretKey getSigningKey() { return Keys.hmacShaKeyFor(jwtSecret.getBytes());
     }
 
-    public String generateAccessToken(Long employeeId, String employeeName, String employeeEmail) throws JOSEException {
-        return generateToken(employeeId, employeeName, employeeEmail, jwtAccessTokenExpirationMs);
+    public String generateAccessToken(Employee user) throws JOSEException {
+        return generateToken(user.getUsername(), jwtAccessTokenExpirationMs);
     }
 
-    private String generateToken(Long employeeId, String employeeName, String employeeEmail, long jwtAccessTokenExpirationMs) throws JOSEException {
+    private String generateToken(String employeeEmail, long jwtAccessTokenExpirationMs) throws JOSEException {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtAccessTokenExpirationMs);
 
         JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                .subject(employeeId.toString())
+                .subject(employeeEmail)
                 .issueTime(now)
                 .expirationTime(expiry)
-                .claim("employeeName", employeeName)
                 .claim("employeeEmail", employeeEmail)
                 .build();
 
@@ -84,5 +84,9 @@ public class JwtService {
         jweObject.encrypt(encrypter);
 
         return jweObject.serialize();
+    }
+
+    private void validateToken(){
+
     }
 }

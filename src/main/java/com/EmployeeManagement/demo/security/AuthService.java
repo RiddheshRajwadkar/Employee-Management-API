@@ -6,10 +6,11 @@ import com.EmployeeManagement.demo.dtos.EmployeeRequestDTO;
 import com.EmployeeManagement.demo.dtos.EmployeeResponseDTO;
 import com.EmployeeManagement.demo.entities.Employee;
 import com.EmployeeManagement.demo.mappers.EmployeeMapper;
-import com.EmployeeManagement.demo.repositories.EmployeeRepository;
 import com.EmployeeManagement.demo.services.EmployeeService;
 import com.nimbusds.jose.JOSEException;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,14 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final EmployeeMapper employeeMapper;
     private final JwtService jwtService;
-    private final EmployeeRepository employeeRepository;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(EmployeeService employeeService, PasswordEncoder passwordEncoder, EmployeeMapper employeeMapper, JwtService jwtService, EmployeeRepository employeeRepository) {
+    public AuthService(EmployeeService employeeService, PasswordEncoder passwordEncoder, EmployeeMapper employeeMapper, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.employeeService = employeeService;
         this.passwordEncoder = passwordEncoder;
         this.employeeMapper = employeeMapper;
         this.jwtService = jwtService;
-        this.employeeRepository = employeeRepository;
+        this.authenticationManager = authenticationManager;
     }
 
     public EmployeeResponseDTO registerEmployee(EmployeeRequestDTO employeeRequestDTO) {
@@ -38,12 +39,12 @@ public class AuthService {
     }
 
     public AuthResponseDTO loginEmployee(AuthRequestDTO authRequestDTO) throws JOSEException {
-        Employee employee = employeeRepository.findEmployeeByEmail(authRequestDTO.getEmail());
-        if(!passwordEncoder.matches(authRequestDTO.getPassword(), employee.getPassword())) {
-            throw new BadCredentialsException("Invalid email or password");
-        }
 
-        String token = jwtService.generateAccessToken(employee.getId(), employee.getName(), employee.getEmail());
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(), authRequestDTO.getPassword()));
+
+        Employee employee = (Employee) authentication.getPrincipal();
+
+        String token = jwtService.generateAccessToken(employee);
         return new AuthResponseDTO(token);
     }
 }
