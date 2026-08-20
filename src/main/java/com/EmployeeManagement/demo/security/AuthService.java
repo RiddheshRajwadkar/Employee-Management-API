@@ -6,6 +6,7 @@ import com.EmployeeManagement.demo.dtos.EmployeeRequestDTO;
 import com.EmployeeManagement.demo.dtos.EmployeeResponseDTO;
 import com.EmployeeManagement.demo.entities.Employee;
 import com.EmployeeManagement.demo.mappers.EmployeeMapper;
+import com.EmployeeManagement.demo.repositories.EmployeeRepository;
 import com.EmployeeManagement.demo.services.EmployeeService;
 import com.nimbusds.jose.JOSEException;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,21 +20,28 @@ public class AuthService {
     private final EmployeeService employeeService;
     private final PasswordEncoder passwordEncoder;
     private final EmployeeMapper employeeMapper;
+    private final EmployeeRepository employeeRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthService(EmployeeService employeeService, PasswordEncoder passwordEncoder, EmployeeMapper employeeMapper, JwtService jwtService, AuthenticationManager authenticationManager) {
+    public AuthService(EmployeeService employeeService, PasswordEncoder passwordEncoder, EmployeeMapper employeeMapper, EmployeeRepository employeeRepository, JwtService jwtService, AuthenticationManager authenticationManager) {
         this.employeeService = employeeService;
         this.passwordEncoder = passwordEncoder;
         this.employeeMapper = employeeMapper;
+        this.employeeRepository = employeeRepository;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
     }
 
     public EmployeeResponseDTO registerEmployee(EmployeeRequestDTO employeeRequestDTO) {
-        Employee employee = employeeMapper.toEntity(employeeRequestDTO);
+        Employee employee = employeeRepository.findEmployeeByEmail(employeeRequestDTO.getEmail());
+        if(employee != null){
+            throw new RuntimeException("Employee with email " + employeeRequestDTO.getEmail() + " already exists");
+        }
+        employee = employeeMapper.toEntity(employeeRequestDTO);
         String encodedPassword = passwordEncoder.encode(employee.getPassword());
         employee.setPassword(encodedPassword);
+        employee.setStatus("ACTIVE");
         employeeService.createEmployee(employee);
         return employeeMapper.toResponseDto(employee);
     }

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Date;
 
 
@@ -58,15 +58,15 @@ public class JwtService {
     }
 
     public String generateAccessToken(Employee user) throws JOSEException {
-        return generateToken(user.getUsername(), jwtAccessTokenExpirationMs);
+        return generateToken(user.getId(), user.getUsername(), jwtAccessTokenExpirationMs);
     }
 
-    private String generateToken(String employeeEmail, long jwtAccessTokenExpirationMs) throws JOSEException {
+    private String generateToken(Long employeeId, String employeeEmail, long jwtAccessTokenExpirationMs) throws JOSEException {
         Date now = new Date();
         Date expiry = new Date(now.getTime() + jwtAccessTokenExpirationMs);
 
         JWTClaimsSet claims = new JWTClaimsSet.Builder()
-                .subject(employeeEmail)
+                .subject(employeeId.toString())
                 .issueTime(now)
                 .expirationTime(expiry)
                 .claim("employeeEmail", employeeEmail)
@@ -74,13 +74,15 @@ public class JwtService {
 
         SignedJWT signedJWT = new SignedJWT( new JWSHeader(JWSAlgorithm.HS256),claims);
 
-        JWSSigner jwsSigner = new MACSigner(jwtSecret);
+        byte[] signingKey = Base64.getDecoder().decode(jwtSecret);
+        JWSSigner jwsSigner = new MACSigner(signingKey);
         signedJWT.sign(jwsSigner);
 
         JWEObject jweObject = new JWEObject(new JWEHeader.Builder(JWEAlgorithm.DIR, EncryptionMethod.A256GCM).contentType("JWT").build(),
                 new Payload(signedJWT));
 
-        JWEEncrypter encrypter = new DirectEncrypter(jwtEncryptedSecret.getBytes(StandardCharsets.UTF_8));
+        byte[] encKey = Base64.getDecoder().decode(jwtEncryptedSecret);
+        JWEEncrypter encrypter = new DirectEncrypter(encKey);
         jweObject.encrypt(encrypter);
 
         return jweObject.serialize();
