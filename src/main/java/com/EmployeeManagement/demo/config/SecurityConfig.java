@@ -1,5 +1,6 @@
-package com.EmployeeManagement.demo.security;
+package com.EmployeeManagement.demo.config;
 
+import com.EmployeeManagement.demo.security.JwtAuthFilter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

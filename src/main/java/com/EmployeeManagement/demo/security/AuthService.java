@@ -5,6 +5,7 @@ import com.EmployeeManagement.demo.dtos.AuthResponseDTO;
 import com.EmployeeManagement.demo.dtos.EmployeeRequestDTO;
 import com.EmployeeManagement.demo.dtos.EmployeeResponseDTO;
 import com.EmployeeManagement.demo.entities.Employee;
+import com.EmployeeManagement.demo.exception.DuplicateResourceException;
 import com.EmployeeManagement.demo.mappers.EmployeeMapper;
 import com.EmployeeManagement.demo.repositories.EmployeeRepository;
 import com.EmployeeManagement.demo.services.EmployeeService;
@@ -36,7 +37,7 @@ public class AuthService {
     public EmployeeResponseDTO registerEmployee(EmployeeRequestDTO employeeRequestDTO) {
         Employee employee = employeeRepository.findEmployeeByEmail(employeeRequestDTO.getEmail());
         if(employee != null){
-            throw new RuntimeException("Employee with email " + employeeRequestDTO.getEmail() + " already exists");
+            throw new DuplicateResourceException("Employee with email " + employeeRequestDTO.getEmail() + " already exists");
         }
         employee = employeeMapper.toEntity(employeeRequestDTO);
         String encodedPassword = passwordEncoder.encode(employee.getPassword());

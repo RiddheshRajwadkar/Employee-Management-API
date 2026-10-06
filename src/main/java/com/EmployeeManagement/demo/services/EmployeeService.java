@@ -1,7 +1,9 @@
 package com.EmployeeManagement.demo.services;
 
 import com.EmployeeManagement.demo.entities.Employee;
+import com.EmployeeManagement.demo.exception.ResourceNotFoundException;
 import com.EmployeeManagement.demo.repositories.EmployeeRepository;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +29,13 @@ public class EmployeeService {
 
     public Employee getEmployeeById(Long id) {
         return employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
     }
 
     public Employee updateEmployee(Long id, Employee updatedEmployee) {
 
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with id: " + id));
 
         existingEmployee.setName(updatedEmployee.getName());
         existingEmployee.setDepartment(updatedEmployee.getDepartment());
@@ -45,7 +47,7 @@ public class EmployeeService {
     public void deleteEmployee(Long id) {
         // Check if the employee exists before deleting
         if (!employeeRepository.existsById(id)) {
-            throw new RuntimeException("Employee not found with id: " + id);
+            throw new ResourceNotFoundException("Employee not found with id: " + id);
         }
         employeeRepository.deleteById(id);
     }
