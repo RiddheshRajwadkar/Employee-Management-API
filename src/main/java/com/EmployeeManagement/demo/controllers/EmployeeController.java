@@ -1,7 +1,10 @@
 package com.EmployeeManagement.demo.controllers;
 
-import com.EmployeeManagement.demo.services.EmployeeService;
+import com.EmployeeManagement.demo.dtos.EmployeeFilterDTO;
+import com.EmployeeManagement.demo.dtos.EmployeeResponseDTO;
+import com.EmployeeManagement.demo.dtos.PageResponseDTO;
 import com.EmployeeManagement.demo.entities.Employee;
+import com.EmployeeManagement.demo.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,16 @@ public class EmployeeController {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         List<Employee> employees = employeeService.getAllEmployees();
+        return new ResponseEntity<>(employees, HttpStatus.OK); // Return 200 status
+    }
+
+    @PostMapping(value = "/search")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<PageResponseDTO<EmployeeResponseDTO>> searchEmployees(
+            EmployeeFilterDTO employeeFilterDTO,
+            PageResponseDTO pageResponseDTO
+    ) {
+        PageResponseDTO<EmployeeResponseDTO> employees = employeeService.searchEmployees(employeeFilterDTO, pageResponseDTO);
         return new ResponseEntity<>(employees, HttpStatus.OK); // Return 200 status
     }
 
