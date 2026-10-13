@@ -44,7 +44,7 @@ public class SecurityConfig {
     public SecurityFilterChain swaggerSecurity(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .securityMatcher(
-                        "/swagger.ui/**"
+                        "/swagger-ui/**"
                 )
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
